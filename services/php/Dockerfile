@@ -34,6 +34,5 @@ RUN apk add zsh \
 
 WORKDIR /www
 COPY --from=composer /usr/bin/composer /usr/bin/composer
-RUN composer global require "laravel/installer" \
-    && echo "export PATH=$PATH:/root/.composer/vendor/bin" >> /root/.zshrc
+RUN echo "export PATH=$PATH:/root/.composer/vendor/bin" >> /root/.zshrc
 CMD ["/bin/zsh"]

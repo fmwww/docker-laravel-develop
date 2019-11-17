@@ -63,7 +63,7 @@ services:
       target: workspace
     volumes:
       - ./www:/www
-      - ./services/workspace/composer/cache:/root/.composer/cache
+      - ./services/workspace/composer:/root/.composer
     networks:
       - develop
     
