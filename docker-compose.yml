@@ -63,7 +63,7 @@ services:
       target: workspace
     volumes:
       - ./www:/www
-      - ./services/workspace/composer:/root/.composer
+      - ./services/workspace/ssh:/root/.ssh
     networks:
       - develop
     

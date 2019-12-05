@@ -29,7 +29,7 @@ RUN sed -i "s/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g" /etc/apk/repositories
 
 FROM php72 as workspace
 
-RUN apk add zsh \
+RUN apk add zsh openssh \
     && sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 
 WORKDIR /www
