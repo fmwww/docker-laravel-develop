@@ -1,6 +1,4 @@
 FROM composer as composer
-WORKDIR /www
-RUN composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/
 ENTRYPOINT ["composer"]
 
 FROM php:7.2-fpm-alpine as php72
@@ -33,6 +31,15 @@ RUN apk add zsh openssh \
     && sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 
 WORKDIR /www
+ARG GIT_NAME
+ARG GIT_EMAIL
+ENV GIT_NAME=$GIT_NAME GIT_EMAIL=$GIT_EMAIL
 COPY --from=composer /usr/bin/composer /usr/bin/composer
-RUN echo "export PATH=$PATH:/root/.composer/vendor/bin" >> /root/.zshrc
+RUN apk update \
+    && apk add tzdata vim \
+    && cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
+    && echo "Asia/Shanghai" > /etc/timezone \
+    && git config --global user.name "${GIT_NAME}" \
+    && git config --global user.email "${GIT_EMAIL}" \
+    && echo "export PATH=$PATH:/root/.composer/vendor/bin" >> /root/.zshrc
 CMD ["/bin/zsh"]

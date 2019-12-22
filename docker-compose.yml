@@ -61,9 +61,13 @@ services:
     build:
       context: ./services/php
       target: workspace
+      args:
+        - GIT_NAME=$GIT_NAME
+        - GIT_EMAIL=$GIT_EMAIL
     volumes:
       - ./www:/www
       - ./services/workspace/ssh:/root/.ssh
+      - ./services/workspace/composer/:/root/.composer
     networks:
       - develop
     
