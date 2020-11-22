@@ -1,0 +1,16 @@
+export CHARSET=UTF-8
+export LANG=C.UTF-8
+export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+export PAGER=less
+export PS1='\h:\w\$ '
+export https_proxy=http://10.0.0.13:8888
+export http_proxy=http://10.0.0.13:8888
+export all_proxy=socks5://10.0.0.13:8889
+
+umask 022
+
+for script in /etc/profile.d/*.sh ; do
+        if [ -r $script ] ; then
+                . $script
+        fi
+done

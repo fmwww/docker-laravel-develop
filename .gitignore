@@ -1,4 +1,5 @@
 .idea/
-www/*
 .DS_Store
 .env
+www
+services/elasticsearch/data

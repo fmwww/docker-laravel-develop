@@ -36,7 +36,7 @@ services:
     ports:
       - "${MYSQL_PORT}:3306"
     volumes:
-      - ./services/database/mysql:/etc/mysql # mysql配置
+      - ./services/database/mysql/mysqld.cnf:/etc/mysql/mysql.conf.d/mysqld.cnf # mysql配置
       - ./services/database/mysql/data:/var/lib/mysql # mysql数据
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
@@ -55,6 +55,34 @@ services:
       - ./services/redis/redis.conf:/usr/local/etc/redis/redis.conf # redis 配置文件
     networks:
       - develop
+
+  frpc:
+    image: "snowdreamtech/frpc:0.27.0"
+    volumes:
+      - ./services/frpc/frpc.ini:/etc/frp/frpc.ini
+    networks:
+      - develop
+    depends_on:
+      - nginx
+
+  # elasticsearch:
+  #   build:
+  #     context: ./services/elasticsearch
+  #   ports:
+  #     - 9200:9200
+  #   environment:
+  #     discovery.type: single-node
+  #     http.port: 9200
+  #     http.cors.allow-origin: 'http://localhost:9100,http://127.0.0.1:9100'
+  #     http.cors.enabled: 'true'
+  #     http.cors.allow-headers: 'X-Requested-With,X-Auth-Token,Content-Type,Content-Length,Authorization'
+  #     http.cors.allow-credentials: 'true'
+  #   volumes:
+  #     - ./services/elasticsearch/plugins:/usr/share/elasticsearch/plugins #插件文件挂载
+  #     - ./services/elasticsearch/data:/usr/share/elasticsearch/data #数据文件挂载
+  #   networks:
+  #     - develop
+
   workspace:
     container_name: workspace
     tty: true
@@ -64,10 +92,11 @@ services:
       args:
         - GIT_NAME=$GIT_NAME
         - GIT_EMAIL=$GIT_EMAIL
+    ports:
+      - 6001:6001
     volumes:
       - ./www:/www
       - ./services/workspace/ssh:/root/.ssh
       - ./services/workspace/composer/:/root/.composer
     networks:
       - develop
-    
